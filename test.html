@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="img-src * data: blob:; default-src * 'unsafe-inline' 'unsafe-eval';">
+    <title>FurkVPN postpic gen</title>
+ 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Ubuntu+Mono&display=swap" rel="stylesheet">
+ 
+    <style>
+        :root { 
+            --bg: #000000; 
+            --input: #111111; 
+            --text: #FFFFFF; 
+            --accent: #BDC7DC; 
+            --border: #222222; 
+            --btn-hover: #e0e0e0;
+        }
+ 
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Google Sans', sans-serif;
+            margin: 0; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+ 
+        .app-container { width: 100%; max-width: 984px; display: flex; flex-direction: column; gap: 30px; }
+ 
+        .controls-panel { background: #080808; padding: 20px; border-radius: 8px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 20px; }
+        .control-row { display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end; }
+        .control-group { display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
+ 
+        label { font-size: 0.7rem; color: #777; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+ 
+        input, select { 
+            background: var(--input); 
+            border: 1px solid var(--border); 
+            color: var(--text); 
+            padding: 0 12px; 
+            height: 45px;
+            box-sizing: border-box;
+            border-radius: 6px; 
+            outline: none; 
+            font-family: 'Ubuntu Mono', monospace;
+            transition: all 0.3s ease;
+        }
+        input:focus { border-color: #555; }
+ 
+        .btn { 
+            background: transparent; 
+            border: 1px solid var(--border); 
+            color: var(--text); 
+            height: 45px;
+            box-sizing: border-box;
+            padding: 0 20px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            border-radius: 6px;
+            font-family: inherit;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn:hover { background: #111; border-color: #444; }
+        .btn:active { transform: translateY(1px); }
+ 
+        #addSubBtn {
+            border: 1px dashed var(--border);
+            background: transparent;
+        }
+        #addSubBtn:hover {
+            border-style: solid;
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(189, 199, 220, 0.05);
+        }
+ 
+        .btn-dl { 
+            background: var(--text); 
+            color: #000; 
+            border: none; 
+            font-weight: 800; 
+            height: 55px;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.1);
+        }
+        .btn-dl:hover { background: var(--btn-hover); transform: translateY(-1px); }
+ 
+        .btn-remove { color: #ff4444; border-color: #422; width: 45px; padding: 0; }
+        .btn-remove:hover { background: #311; }
+ 
+        .canvas-wrapper { 
+            width: 100%; 
+            border: 1px solid var(--border); 
+            aspect-ratio: 984/500; 
+            background: #000; 
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        canvas { width: 100%; height: auto; display: block; image-rendering: -webkit-optimize-contrast; }
+ 
+        #svgContainer { display: none; }
+    </style>
+</head>
+<body>
+ 
+    <div id="svgContainer">
+        <svg width="984" height="500" viewBox="0 0 984 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_255_20)">
+            <rect width="984" height="500" fill="#1A1C1E"/>
+            <path d="M-130.474 436.876C-172.305 468.414 -141.004 469.727 -138.567 504.682L-137.607 546.689L29.2921 798.973C52.0196 736.424 113.443 610.613 177.315 607.765C257.156 604.206 172.782 506.441 140.488 502.551C108.195 498.662 29.9866 459.504 71.6395 414.847C121.771 361.099 126.872 340.137 54.4322 333.006C-35.0256 324.2 -81.0668 381.596 -82.708 400.192C-85.2102 428.544 -110.967 422.169 -130.474 436.876Z" fill="#BDC7DC" stroke="black"/>
+            <path d="M882.043 389.521C882.043 394.227 878.227 398.043 873.521 398.043C868.815 398.043 865 394.227 865 389.521C865 384.815 868.815 381 873.521 381C878.227 381 882.043 384.815 882.043 389.521Z" fill="#282B31"/>
+            <path d="M918.021 389.521C918.021 394.227 914.206 398.043 909.5 398.043C904.794 398.043 900.979 394.227 900.979 389.521C900.979 384.815 904.794 381 909.5 381C914.206 381 918.021 384.815 918.021 389.521Z" fill="#282B31"/>
+            <path d="M954 389.521C954 394.227 950.185 398.043 945.479 398.043C940.773 398.043 936.957 394.227 936.957 389.521C936.957 384.815 940.773 381 945.479 381C950.185 381 954 384.815 954 389.521Z" fill="#282B31"/>
+            <path d="M882.043 425.5C882.043 430.206 878.227 434.021 873.521 434.021C868.815 434.021 865 430.206 865 425.5C865 420.794 868.815 416.979 873.521 416.979C878.227 416.979 882.043 420.794 882.043 425.5Z" fill="#282B31"/>
+            <path d="M918.021 425.5C918.021 430.206 914.206 434.021 909.5 434.021C904.794 434.021 900.979 430.206 900.979 425.5C900.979 420.794 904.794 416.979 909.5 416.979C914.206 416.979 918.021 420.794 918.021 425.5Z" fill="#282B31"/>
+            <path d="M954 425.5C954 430.206 950.185 434.021 945.479 434.021C940.773 434.021 936.957 430.206 936.957 425.5C936.957 420.794 940.773 416.979 945.479 416.979C950.185 416.979 954 420.794 954 425.5Z" fill="#282B31"/>
+            <path d="M882.043 461.479C882.043 466.185 878.227 470 873.521 470C868.815 470 865 466.185 865 461.479C865 456.773 868.815 452.957 873.521 452.957C878.227 452.957 882.043 456.773 882.043 461.479Z" fill="#282B31"/>
+            <path d="M918.021 461.479C918.021 466.185 914.206 470 909.5 470C904.794 470 900.979 466.185 900.979 461.479C900.979 456.773 904.794 452.957 909.5 452.957C914.206 452.957 918.021 456.773 918.021 461.479Z" fill="#282B31"/>
+            <path d="M954 461.479C954 466.185 950.185 470 945.479 470C940.773 470 936.957 466.185 936.957 461.479C936.957 456.773 940.773 452.957 945.479 452.957C950.185 452.957 954 456.773 954 461.479Z" fill="#282B31"/>
+            <path d="M267.043 -11.4787C267.043 -6.77255 263.227 -2.95745 258.521 -2.95745C253.815 -2.95745 250 -6.77255 250 -11.4787C250 -16.1849 253.815 -20 258.521 -20C263.227 -20 267.043 -16.1849 267.043 -11.4787Z" fill="#282B31"/>
+            <path d="M303.021 -11.4787C303.021 -6.77255 299.206 -2.95745 294.5 -2.95745C289.794 -2.95745 285.979 -6.77255 285.979 -11.4787C285.979 -16.1849 289.794 -20 294.5 -20C299.206 -20 303.021 -16.1849 303.021 -11.4787Z" fill="#282B31"/>
+            <path d="M339 -11.4787C339 -6.77255 335.185 -2.95745 330.479 -2.95745C325.773 -2.95745 321.957 -6.77255 321.957 -11.4787C321.957 -16.1849 325.773 -20 330.479 -20C335.185 -20 339 -16.1849 339 -11.4787Z" fill="#282B31"/>
+            <path d="M267.043 24.5C267.043 29.2062 263.227 33.0213 258.521 33.0213C253.815 33.0213 250 29.2062 250 24.5C250 19.7938 253.815 15.9787 258.521 15.9787C263.227 15.9787 267.043 19.7938 267.043 24.5Z" fill="#282B31"/>
+            <path d="M303.021 24.5C303.021 29.2062 299.206 33.0213 294.5 33.0213C289.794 33.0213 285.979 29.2062 285.979 24.5C285.979 19.7938 289.794 15.9787 294.5 15.9787C299.206 15.9787 303.021 19.7938 303.021 24.5Z" fill="#282B31"/>
+            <path d="M339 24.5C339 29.2062 335.185 33.0213 330.479 33.0213C325.773 33.0213 321.957 29.2062 321.957 24.5C321.957 19.7938 325.773 15.9787 330.479 15.9787C335.185 15.9787 339 19.7938 339 24.5Z" fill="#282B31"/>
+            <path d="M267.043 60.4787C267.043 65.1849 263.227 69 258.521 69C253.815 69 250 65.1849 250 60.4787C250 55.7726 253.815 51.9574 258.521 51.9574C263.227 51.9574 267.043 55.7726 267.043 60.4787Z" fill="#282B31"/>
+            <path d="M303.021 60.4787C303.021 65.1849 299.206 69 294.5 69C289.794 69 285.979 65.1849 285.979 60.4787C285.979 55.7726 289.794 51.9574 294.5 51.9574C299.206 51.9574 303.021 55.7726 303.021 60.4787Z" fill="#282B31"/>
+            <path d="M339 60.4787C339 65.1849 335.185 69 330.479 69C325.773 69 321.957 65.1849 321.957 60.4787C321.957 55.7726 325.773 51.9574 330.479 51.9574C335.185 51.9574 339 55.7726 339 60.4787Z" fill="#282B31"/>
+            <path d="M796 -37C825.271 -37 849 -13.2711 849 16C849 45.2711 825.271 69 796 69C766.729 69 743 45.2711 743 16C743 -13.2711 766.729 -37 796 -37ZM796 47.4734C813.382 47.4734 827.473 33.3823 827.473 16C827.473 -1.38228 813.382 -15.4734 796 -15.4734C778.618 -15.4734 764.527 -1.38228 764.527 16C764.527 33.3823 778.618 47.4734 796 47.4734Z" fill="#282B31"/>
+            <path d="M982.492 5.62588C996.41 -0.664117 1012.73 6.33973 1017.75 20.7618L1022.96 35.6947C1025.49 42.9679 1031.12 48.7428 1038.33 51.4628L1053.12 57.0473C1067.41 62.4408 1073.99 78.9301 1067.35 92.6822L1060.47 106.922C1057.12 113.857 1057.02 121.921 1060.19 128.939L1066.7 143.35C1072.99 157.267 1065.99 173.583 1051.57 178.609L1036.63 183.814C1029.36 186.349 1023.59 191.978 1020.87 199.184L1015.28 213.979C1009.89 228.268 993.399 234.852 979.647 228.208L965.407 221.329C958.472 217.979 950.408 217.876 943.39 221.048L928.979 227.561C915.062 233.851 898.746 226.847 893.72 212.425L888.515 197.492C885.98 190.219 880.351 184.444 873.145 181.724L858.35 176.139C844.061 170.746 837.477 154.257 844.121 140.504L851 126.265C854.35 119.33 854.453 111.266 851.281 104.247L844.768 89.8366C838.478 75.9192 845.482 59.6035 859.904 54.5771L874.837 49.3727C882.11 46.8378 887.885 41.2087 890.605 34.0027L896.19 19.2076C901.583 4.91882 918.073 -1.66561 931.825 4.97813L946.064 11.8572C952.999 15.2077 961.063 15.3108 968.082 12.1387L982.492 5.62588Z" fill="#585858"/>
+            <path d="M235.853 445.816C242.746 432.582 259.507 428.112 272.074 436.156V436.156C278.412 440.212 286.223 441.25 293.4 438.989V438.989C307.631 434.505 322.644 443.196 325.843 457.77V457.77C327.456 465.12 332.245 471.377 338.919 474.853V474.853C352.152 481.746 356.622 498.507 348.579 511.074V511.074C344.522 517.412 343.485 525.222 345.746 532.4V532.4C350.229 546.631 341.538 561.644 326.964 564.843V564.843C319.614 566.456 313.358 571.245 309.882 577.919V577.919C302.989 591.152 286.228 595.622 273.66 587.579V587.579C267.322 583.522 259.512 582.485 252.335 584.746V584.746C238.103 589.229 223.091 580.538 219.892 565.964V565.964C218.278 558.614 213.489 552.358 206.816 548.882V548.882C193.582 541.988 189.112 525.228 197.156 512.66V512.66C201.212 506.322 202.25 498.512 199.989 491.335V491.335C195.505 477.103 204.196 462.091 218.77 458.892V458.892C226.12 457.278 232.377 452.489 235.853 445.816V445.816Z" fill="#282B31"/>
+            <path d="M952.716 -61.9926C964.391 -69.3592 979.825 -62.7339 982.526 -49.1962V-49.1962C984.42 -39.7044 992.933 -32.9976 1002.6 -33.3778V-33.3778C1016.4 -33.9201 1026.45 -20.4655 1022.02 -7.39093V-7.39093C1018.92 1.77612 1022.93 11.8409 1031.5 16.3473V16.3473C1043.72 22.7746 1045.7 39.4534 1035.32 48.5614V48.5614C1028.05 54.9475 1026.5 65.6733 1031.66 73.8589V73.8589C1039.03 85.5336 1032.4 100.967 1018.87 103.669V103.669C1009.38 105.562 1002.67 114.075 1003.05 123.747V123.747C1003.59 137.541 990.136 147.594 977.062 143.164V143.164C967.895 140.059 957.83 144.078 953.324 152.643V152.643C946.896 164.86 930.217 166.84 921.109 156.466V156.466C914.723 149.193 903.998 147.641 895.812 152.806V152.806C884.137 160.173 868.703 153.548 866.002 140.01V140.01C864.108 130.518 855.595 123.811 845.924 124.191V124.191C832.13 124.734 822.077 111.279 826.506 98.2045V98.2045C829.612 89.0375 825.593 78.9727 817.027 74.4663V74.4663C804.81 68.039 802.831 51.3602 813.205 42.2521V42.2521C820.478 35.8661 822.03 25.1403 816.865 16.9547V16.9547C809.498 5.27998 816.123 -10.1538 829.661 -12.855V-12.855C839.153 -14.7488 845.86 -23.2617 845.479 -32.9331V-32.9331C844.937 -46.7271 858.392 -56.7805 871.466 -52.3509V-52.3509C880.633 -49.2451 890.698 -53.2641 895.205 -61.8299V-61.8299C901.632 -74.0469 918.311 -76.0262 927.419 -65.6527V-65.6527C933.805 -58.3795 944.531 -56.8277 952.716 -61.9926V-61.9926Z" fill="#D9D9D9"/>
+            <path d="M72 142C57.9435 142 44.4628 136.416 34.5233 126.477C24.5839 116.537 19 103.056 19 89C19 74.9435 24.5839 61.4628 34.5233 51.5233C44.4628 41.5839 57.9435 36 72 36L72 57.5266C63.6527 57.5266 55.6474 60.8425 49.7449 66.7449C43.8425 72.6474 40.5266 80.6527 40.5266 89C40.5266 97.3473 43.8425 105.353 49.7449 111.255C55.6474 117.157 63.6527 120.473 72 120.473L72 142Z" fill="#282B31"/>
+            <path d="M72 142C86.0565 142 99.5372 147.584 109.477 157.523C119.416 167.463 125 180.944 125 195C125 209.056 119.416 222.537 109.477 232.477C99.5372 242.416 86.0565 248 72 248L72 226.473C80.3473 226.473 88.3526 223.157 94.2551 217.255C100.157 211.353 103.473 203.347 103.473 195C103.473 186.653 100.157 178.647 94.2551 172.745C88.3526 166.843 80.3473 163.527 72 163.527L72 142Z" fill="#282B31"/>
+            <path d="M176 101.5L161.107 86.6066C155.249 80.7487 145.751 80.7487 139.893 86.6066L135.607 90.8934C129.749 96.7513 120.251 96.7513 114.393 90.8934L110.107 86.6066C104.249 80.7487 94.7513 80.7487 88.8934 86.6066L74 101.5" stroke="#282B31" stroke-width="5"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_255_20">
+            <rect width="984" height="500" fill="white"/>
+            </clipPath>
+            </defs>
+        </svg>
+    </div>
+ 
+    <div class="app-container">
+        <header style="text-align: center; margin-bottom: 10px;">
+            <h1 style="margin:0; font-size: 2.5rem; letter-spacing: -1px;">FurkVPN</h1>
+            <p style="color:#555; margin: 5px 0 0 0; font-family: 'Ubuntu Mono';">генератор картинок хуле</p>
+        </header>
+ 
+        <div class="controls-panel">
+            <div class="control-row">
+                <div class="control-group" style="flex: 3;">
+                    <label>Основной текст</label>
+                    <input type="text" id="mainText" placeholder="Введите текст...">
+                </div>
+                <div class="control-group">
+                    <label>Размер</label>
+                    <input type="number" id="mainSize">
+                </div>
+                <div class="control-group">
+                    <label>Начертание</label>
+                    <select id="mainWeight">
+                        <option value="400">Regular</option>
+                        <option value="500">Medium</option>
+                        <option value="700">Bold</option>
+                    </select>
+                </div>
+            </div>
+ 
+            <div class="control-row">
+                <div class="control-group">
+                    <label>Фоновая иконка (.svg)</label>
+                    <input type="file" id="iconFile" accept=".svg" style="padding-top: 10px;">
+                </div>
+                <div class="control-group">
+                    <label>Размер иконки</label>
+                    <input type="number" id="iconSize">
+                </div>
+                <div class="control-group">
+                    <label>Цвет иконки</label>
+                    <input type="color" id="iconColor">
+                </div>
+                <div class="control-group">
+                    <label>Междустрочный интервал</label>
+                    <input type="number" id="textGap" value="30">
+                </div>
+            </div>
+ 
+            <div id="subsList"></div>
+            <button class="btn" id="addSubBtn" style="width: 100%;">+ ДОБАВИТЬ ПОДЗАГОЛОВОК</button>
+        </div>
+ 
+        <div class="canvas-wrapper">
+            <canvas id="previewCanvas" width="984" height="500"></canvas>
+        </div>
+ 
+        <div class="control-row" style="margin-top: 10px;">
+            <div class="control-group" style="flex: 0;">
+                <label>Множитель</label>
+                <input type="number" id="exportScale" value="2" min="1" max="4" style="width: 70px;">
+            </div>
+            <button class="btn btn-dl" id="downloadBtn" style="flex-grow: 1;">СКАЧАТЬ В .PNG</button>
+        </div>
+    </div>
+ 
+    <script>
+        const CONFIG = {
+            mainText: "Текст тута",
+            mainSize: 64,
+            mainWeight: "700",
+            iconSize: 280,
+            iconColor: "#272B31",
+            textGap: 20,
+            defaultSubSize: 32,
+            canvasW: 984,
+            canvasH: 500
+        };
+ 
+        const canvas = document.getElementById('previewCanvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        const svgContainer = document.getElementById('svgContainer');
+ 
+        let iconRawSource = null;
+        let subtitles = [];
+        let renderTimeout;
+ 
+        async function init() {
+            document.getElementById('mainText').value = CONFIG.mainText;
+            document.getElementById('mainSize').value = CONFIG.mainSize;
+            document.getElementById('mainWeight').value = CONFIG.mainWeight;
+            document.getElementById('iconSize').value = CONFIG.iconSize;
+            document.getElementById('iconColor').value = CONFIG.iconColor;
+            document.getElementById('textGap').value = CONFIG.textGap;
+ 
+            addListeners();
+ 
+            await document.fonts.ready;
+            draw();
+        }
+ 
+        function addListeners() {
+            const uiIds = ['mainText', 'mainSize', 'mainWeight', 'iconSize', 'iconColor', 'textGap'];
+            uiIds.forEach(id => {
+                document.getElementById(id).addEventListener('input', debounceDraw);
+            });
+ 
+            document.getElementById('iconFile').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        iconRawSource = ev.target.result;
+                        draw();
+                    };
+                    reader.readAsText(file);
+                }
+            });
+ 
+            document.getElementById('addSubBtn').onclick = () => {
+                subtitles.push({ text: 'Новая строка', size: CONFIG.defaultSubSize, weight: '400' });
+                renderSubs();
+                draw();
+            };
+ 
+            document.getElementById('downloadBtn').onclick = download;
+        }
+ 
+        function debounceDraw() {
+            clearTimeout(renderTimeout);
+            renderTimeout = setTimeout(draw, 50);
+        }
+ 
+        async function draw(targetCtx = ctx, scale = 1) {
+            const w = CONFIG.canvasW * scale;
+            const h = CONFIG.canvasH * scale;
+ 
+            targetCtx.fillStyle = '#1A1C1E';
+            targetCtx.fillRect(0, 0, w, h);
+ 
+            const backgroundSvg = svgContainer.querySelector('svg');
+            if (backgroundSvg) {
+                await drawSvgToCanvas(backgroundSvg.outerHTML, 0, 0, w, h, targetCtx);
+            }
+ 
+            if (iconRawSource) {
+                const iSize = parseInt(document.getElementById('iconSize').value) * scale;
+                const iColor = document.getElementById('iconColor').value;
+ 
+                let coloredIcon = iconRawSource.includes('fill=') 
+                    ? iconRawSource.replace(/fill="[^"]*"/g, `fill="${iColor}"`)
+                    : iconRawSource.replace('<svg', `<svg fill="${iColor}"`);
+ 
+                await drawSvgToCanvas(coloredIcon, (w - iSize)/2, (h - iSize)/2, iSize, iSize, targetCtx);
+            }
+ 
+            renderText(targetCtx, scale);
+        }
+ 
+        function drawSvgToCanvas(svgData, x, y, width, height, target) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+                const url = URL.createObjectURL(svgBlob);
+ 
+                img.onload = () => {
+                    target.drawImage(img, x, y, width, height);
+                    URL.revokeObjectURL(url);
+                    resolve();
+                };
+                img.onerror = () => {
+                    console.error("SVG Render Error");
+                    URL.revokeObjectURL(url);
+                    resolve();
+                }
+                img.src = url;
+            });
+        }
+ 
+        function renderText(c, s) {
+            const mText = document.getElementById('mainText').value;
+            const mSize = parseInt(document.getElementById('mainSize').value) * s;
+            const weight = document.getElementById('mainWeight').value;
+            const gap = parseInt(document.getElementById('textGap').value) * s;
+ 
+            c.fillStyle = '#FFFFFF';
+            c.textAlign = 'center';
+            c.textBaseline = 'top';
+ 
+            let totalH = mSize;
+            subtitles.forEach(sub => totalH += gap + (sub.size * s));
+ 
+            let y = (CONFIG.canvasH * s - totalH) / 2;
+ 
+            c.font = `${weight} ${mSize}px 'Google Sans'`;
+            c.fillText(mText, (CONFIG.canvasW * s) / 2, y);
+ 
+            y += mSize + gap;
+ 
+            subtitles.forEach(sub => {
+                c.font = `${sub.weight} ${sub.size * s}px 'Google Sans'`;
+                c.fillText(sub.text, (CONFIG.canvasW * s) / 2, y);
+                y += (sub.size * s) + gap;
+            });
+        }
+ 
+        function renderSubs() {
+            const container = document.getElementById('subsList');
+            container.innerHTML = '';
+            subtitles.forEach((s, i) => {
+                const div = document.createElement('div');
+                div.className = 'control-row';
+                div.style.marginBottom = '10px';
+                div.innerHTML = `
+                    <input type="text" style="flex:3" value="${s.text}" oninput="subtitles[${i}].text=this.value;debounceDraw()">
+                    <input type="number" style="flex:0.6" value="${s.size}" oninput="subtitles[${i}].size=parseInt(this.value)||10;debounceDraw()">
+                    <select style="flex:1" onchange="subtitles[${i}].weight=this.value;debounceDraw()">
+                        <option value="400" ${s.weight==='400'?'selected':''}>Regular</option>
+                        <option value="700" ${s.weight==='700'?'selected':''}>Bold</option>
+                    </select>
+                    <button class="btn btn-remove" onclick="subtitles.splice(${i},1);renderSubs();draw()">✕</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+ 
+        async function download() {
+            const btn = document.getElementById('downloadBtn');
+            const originalText = btn.innerText;
+            btn.innerText = "ГЕНЕРАЦИЯ...";
+ 
+            const s = parseFloat(document.getElementById('exportScale').value) || 2;
+            const off = document.createElement('canvas');
+            off.width = CONFIG.canvasW * s; 
+            off.height = CONFIG.canvasH * s;
+            const offCtx = off.getContext('2d');
+ 
+            await draw(offCtx, s);
+ 
+            const link = document.createElement('a');
+            link.download = `furkvpn_${Date.now()}.png`;
+            link.href = off.toDataURL('image/png', 1.0);
+            link.click();
+ 
+            btn.innerText = originalText;
+        }
+ 
+        init();
+    </script>
+</body>
+</html>
+ 
