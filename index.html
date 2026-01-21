@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="img-src * data: blob:; default-src * 'unsafe-inline' 'unsafe-eval';">
-    <title>FurkVPN Generator</title>
-    
+    <title>FurkVPN postpic gen</title>
+ 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Ubuntu+Mono&display=swap" rel="stylesheet">
-
+ 
     <style>
         :root { 
             --bg: #000000; 
@@ -19,7 +19,7 @@
             --border: #222222; 
             --btn-hover: #e0e0e0;
         }
-
+ 
         body { 
             background: var(--bg); 
             color: var(--text); 
@@ -30,57 +30,75 @@
             flex-direction: column; 
             align-items: center; 
         }
-
+ 
         .app-container { width: 100%; max-width: 984px; display: flex; flex-direction: column; gap: 30px; }
-        
+ 
         .controls-panel { background: #080808; padding: 20px; border-radius: 8px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 20px; }
         .control-row { display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end; }
         .control-group { display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
-        
+ 
         label { font-size: 0.7rem; color: #777; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
-        
+ 
         input, select { 
             background: var(--input); 
             border: 1px solid var(--border); 
             color: var(--text); 
-            padding: 12px; 
+            padding: 0 12px; 
+            height: 45px;
+            box-sizing: border-box;
             border-radius: 6px; 
             outline: none; 
             font-family: 'Ubuntu Mono', monospace;
-            transition: border 0.3s;
+            transition: all 0.3s ease;
         }
         input:focus { border-color: #555; }
-
+ 
         .btn { 
             background: transparent; 
             border: 1px solid var(--border); 
             color: var(--text); 
-            padding: 10px 20px; 
+            height: 45px;
+            box-sizing: border-box;
+            padding: 0 20px; 
             cursor: pointer; 
-            transition: all 0.2s; 
+            transition: all 0.3s ease; 
             border-radius: 6px;
             font-family: inherit;
             text-transform: uppercase;
             font-size: 0.8rem;
             letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .btn:hover { background: #111; border-color: #444; }
         .btn:active { transform: translateY(1px); }
-
+ 
+        #addSubBtn {
+            border: 1px dashed var(--border);
+            background: transparent;
+        }
+        #addSubBtn:hover {
+            border-style: solid;
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(189, 199, 220, 0.05);
+        }
+ 
         .btn-dl { 
             background: var(--text); 
             color: #000; 
             border: none; 
             font-weight: 800; 
-            padding: 18px; 
+            height: 55px;
             font-size: 1rem;
             box-shadow: 0 4px 15px rgba(255,255,255,0.1);
         }
         .btn-dl:hover { background: var(--btn-hover); transform: translateY(-1px); }
-        
-        .btn-remove { color: #ff4444; border-color: #422; }
+ 
+        .btn-remove { color: #ff4444; border-color: #422; width: 45px; padding: 0; }
         .btn-remove:hover { background: #311; }
-
+ 
         .canvas-wrapper { 
             width: 100%; 
             border: 1px solid var(--border); 
@@ -90,12 +108,12 @@
             border-radius: 4px;
         }
         canvas { width: 100%; height: auto; display: block; image-rendering: -webkit-optimize-contrast; }
-        
+ 
         #svgContainer { display: none; }
     </style>
 </head>
 <body>
-
+ 
     <div id="svgContainer">
         <svg width="984" height="500" viewBox="0 0 984 500" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_255_20)">
@@ -134,13 +152,13 @@
             </defs>
         </svg>
     </div>
-
+ 
     <div class="app-container">
         <header style="text-align: center; margin-bottom: 10px;">
             <h1 style="margin:0; font-size: 2.5rem; letter-spacing: -1px;">FurkVPN</h1>
             <p style="color:#555; margin: 5px 0 0 0; font-family: 'Ubuntu Mono';">генератор картинок хуле</p>
         </header>
-
+ 
         <div class="controls-panel">
             <div class="control-row">
                 <div class="control-group" style="flex: 3;">
@@ -160,11 +178,11 @@
                     </select>
                 </div>
             </div>
-
+ 
             <div class="control-row">
                 <div class="control-group">
                     <label>Фоновая иконка (.svg)</label>
-                    <input type="file" id="iconFile" accept=".svg">
+                    <input type="file" id="iconFile" accept=".svg" style="padding-top: 10px;">
                 </div>
                 <div class="control-group">
                     <label>Размер иконки</label>
@@ -179,15 +197,15 @@
                     <input type="number" id="textGap" value="30">
                 </div>
             </div>
-
+ 
             <div id="subsList"></div>
-            <button class="btn" id="addSubBtn" style="border-style: dashed; width: 100%;">+ ДОБАВИТЬ ПОДЗАГОЛОВОК</button>
+            <button class="btn" id="addSubBtn" style="width: 100%;">+ ДОБАВИТЬ ПОДЗАГОЛОВОК</button>
         </div>
-
+ 
         <div class="canvas-wrapper">
             <canvas id="previewCanvas" width="984" height="500"></canvas>
         </div>
-
+ 
         <div class="control-row" style="margin-top: 10px;">
             <div class="control-group" style="flex: 0;">
                 <label>Множитель</label>
@@ -196,7 +214,7 @@
             <button class="btn btn-dl" id="downloadBtn" style="flex-grow: 1;">СКАЧАТЬ В .PNG</button>
         </div>
     </div>
-
+ 
     <script>
         const CONFIG = {
             mainText: "Текст тута",
@@ -209,15 +227,15 @@
             canvasW: 984,
             canvasH: 500
         };
-
+ 
         const canvas = document.getElementById('previewCanvas');
         const ctx = canvas.getContext('2d', { alpha: false });
         const svgContainer = document.getElementById('svgContainer');
-        
+ 
         let iconRawSource = null;
         let subtitles = [];
         let renderTimeout;
-
+ 
         async function init() {
             document.getElementById('mainText').value = CONFIG.mainText;
             document.getElementById('mainSize').value = CONFIG.mainSize;
@@ -225,19 +243,19 @@
             document.getElementById('iconSize').value = CONFIG.iconSize;
             document.getElementById('iconColor').value = CONFIG.iconColor;
             document.getElementById('textGap').value = CONFIG.textGap;
-
+ 
             addListeners();
-            
+ 
             await document.fonts.ready;
             draw();
         }
-
+ 
         function addListeners() {
             const uiIds = ['mainText', 'mainSize', 'mainWeight', 'iconSize', 'iconColor', 'textGap'];
             uiIds.forEach(id => {
                 document.getElementById(id).addEventListener('input', debounceDraw);
             });
-            
+ 
             document.getElementById('iconFile').addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {
@@ -249,53 +267,53 @@
                     reader.readAsText(file);
                 }
             });
-
+ 
             document.getElementById('addSubBtn').onclick = () => {
                 subtitles.push({ text: 'Новая строка', size: CONFIG.defaultSubSize, weight: '400' });
                 renderSubs();
                 draw();
             };
-
+ 
             document.getElementById('downloadBtn').onclick = download;
         }
-
+ 
         function debounceDraw() {
             clearTimeout(renderTimeout);
             renderTimeout = setTimeout(draw, 50);
         }
-
+ 
         async function draw(targetCtx = ctx, scale = 1) {
             const w = CONFIG.canvasW * scale;
             const h = CONFIG.canvasH * scale;
-
+ 
             targetCtx.fillStyle = '#1A1C1E';
             targetCtx.fillRect(0, 0, w, h);
-
+ 
             const backgroundSvg = svgContainer.querySelector('svg');
             if (backgroundSvg) {
                 await drawSvgToCanvas(backgroundSvg.outerHTML, 0, 0, w, h, targetCtx);
             }
-
+ 
             if (iconRawSource) {
                 const iSize = parseInt(document.getElementById('iconSize').value) * scale;
                 const iColor = document.getElementById('iconColor').value;
-                
+ 
                 let coloredIcon = iconRawSource.includes('fill=') 
                     ? iconRawSource.replace(/fill="[^"]*"/g, `fill="${iColor}"`)
                     : iconRawSource.replace('<svg', `<svg fill="${iColor}"`);
-                
+ 
                 await drawSvgToCanvas(coloredIcon, (w - iSize)/2, (h - iSize)/2, iSize, iSize, targetCtx);
             }
-
+ 
             renderText(targetCtx, scale);
         }
-
+ 
         function drawSvgToCanvas(svgData, x, y, width, height, target) {
             return new Promise((resolve) => {
                 const img = new Image();
                 const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
                 const url = URL.createObjectURL(svgBlob);
-                
+ 
                 img.onload = () => {
                     target.drawImage(img, x, y, width, height);
                     URL.revokeObjectURL(url);
@@ -309,34 +327,34 @@
                 img.src = url;
             });
         }
-
+ 
         function renderText(c, s) {
             const mText = document.getElementById('mainText').value;
             const mSize = parseInt(document.getElementById('mainSize').value) * s;
             const weight = document.getElementById('mainWeight').value;
             const gap = parseInt(document.getElementById('textGap').value) * s;
-            
+ 
             c.fillStyle = '#FFFFFF';
             c.textAlign = 'center';
             c.textBaseline = 'top';
-
+ 
             let totalH = mSize;
             subtitles.forEach(sub => totalH += gap + (sub.size * s));
-            
+ 
             let y = (CONFIG.canvasH * s - totalH) / 2;
-
+ 
             c.font = `${weight} ${mSize}px 'Google Sans'`;
             c.fillText(mText, (CONFIG.canvasW * s) / 2, y);
-            
+ 
             y += mSize + gap;
-
+ 
             subtitles.forEach(sub => {
                 c.font = `${sub.weight} ${sub.size * s}px 'Google Sans'`;
                 c.fillText(sub.text, (CONFIG.canvasW * s) / 2, y);
                 y += (sub.size * s) + gap;
             });
         }
-
+ 
         function renderSubs() {
             const container = document.getElementById('subsList');
             container.innerHTML = '';
@@ -356,28 +374,28 @@
                 container.appendChild(div);
             });
         }
-
+ 
         async function download() {
             const btn = document.getElementById('downloadBtn');
             const originalText = btn.innerText;
             btn.innerText = "ГЕНЕРАЦИЯ...";
-            
+ 
             const s = parseFloat(document.getElementById('exportScale').value) || 2;
             const off = document.createElement('canvas');
             off.width = CONFIG.canvasW * s; 
             off.height = CONFIG.canvasH * s;
             const offCtx = off.getContext('2d');
-            
+ 
             await draw(offCtx, s);
-            
+ 
             const link = document.createElement('a');
             link.download = `furkvpn_${Date.now()}.png`;
             link.href = off.toDataURL('image/png', 1.0);
             link.click();
-            
+ 
             btn.innerText = originalText;
         }
-
+ 
         init();
     </script>
 </body>
